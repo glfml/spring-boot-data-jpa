@@ -27,6 +27,9 @@
         <td th:text="${cliente.apellido}"></td>
         <td th:text="${cliente.email}"></td>
         <td th:text="${cliente.createdAt}"></td>
+        <td>
+            <a th:href="@{/form/} + ${cliente.id}" th:text="editar"></a>
+        </td>
     </tr>
     </tbody>
 </table>
