@@ -5,10 +5,7 @@
     <title th:text="${titulo}">Title</title>
 </head>
 <body>
-<h1 th:text="${titulo}"></h1>
-
-<a th:href="@{/listar}">Listado</a>
-<a th:href="@{/form}">Agregar cliente</a>
+<header th:replace="layout/layout :: header"></header>
 
 <table>
     <thead>
@@ -34,5 +31,7 @@
     </tr>
     </tbody>
 </table>
+
+<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

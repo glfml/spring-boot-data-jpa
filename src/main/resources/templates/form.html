@@ -5,7 +5,7 @@
     <title th:text="${titulo}">Title</title>
 </head>
 <body>
-<h1 th:text="${titulo}">Title</h1>
+<header th:replace="layout/layout :: header"></header>
 
 <div th:object="${cliente}" th:remove="tag">
     <ul th:if="${#fields.hasErrors('*')}" class="error">
@@ -35,6 +35,6 @@
     <button type="submit">Crear</button>
 </form>
 
-
+<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

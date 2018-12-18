@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Title</title>
+</head>
+<body>
+<header th:fragment="header">
+    <h1 th:text="${titulo}"></h1>
+
+    <a th:href="@{/listar}">Listado</a>
+    <a th:href="@{/form}">Agregar cliente</a>
+</header>
+
+<footer th:fragment="footer">
+Test
+</footer>
+</body>
+</html>
