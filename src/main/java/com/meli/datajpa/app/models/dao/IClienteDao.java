@@ -7,5 +7,5 @@ public interface IClienteDao {
 
     public List<Cliente> findAll();
 
-
+    public void save(Cliente cliente);
 }

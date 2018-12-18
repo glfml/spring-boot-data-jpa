@@ -1,5 +1,7 @@
 package com.meli.datajpa.app.models.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +27,7 @@ public class Cliente implements Serializable {
 
     @Column(name = "created_at", nullable = false)
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
     public Long getId() {
@@ -66,4 +69,9 @@ public class Cliente implements Serializable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+//    @PrePersist
+//    public void prePersist() {
+//        createdAt = new Date();
+//    }
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Title</title>
+</head>
+<body>
+<h1 th:text="${titulo}">Title</h1>
+
+<form th:action="@{/form}" th:object="${cliente}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <input placeholder="Nombre" type="text" th:field="*{nombre}">
+    <input placeholder="Apellido" type="text" th:field="*{apellido}">
+    <input placeholder="Email" type="email" th:field="*{email}">
+    <input placeholder="Created At" type="date" th:field="*{createdAt}" >
+    <button type="submit">Crear</button>
+</form>
+
+
+</body>
+</html>
