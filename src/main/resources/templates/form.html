@@ -9,10 +9,23 @@
 
 <form th:action="@{/form}" th:object="${cliente}" method="post">
     <input type="hidden" th:field="*{id}">
+
     <input placeholder="Nombre" type="text" th:field="*{nombre}">
+    <small th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small>
+    <br>
+
     <input placeholder="Apellido" type="text" th:field="*{apellido}">
+    <small th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
+    <br>
+
     <input placeholder="Email" type="email" th:field="*{email}">
-    <input placeholder="Created At" type="date" th:field="*{createdAt}" >
+    <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+    <br>
+
+    <input placeholder="Created At" type="date" th:field="*{createdAt}">
+    <small th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></small>
+    <br>
+
     <button type="submit">Crear</button>
 </form>
 

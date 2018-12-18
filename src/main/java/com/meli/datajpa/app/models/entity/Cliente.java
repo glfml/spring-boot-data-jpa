@@ -3,6 +3,9 @@ package com.meli.datajpa.app.models.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,17 +20,22 @@ public class Cliente implements Serializable {
     private Long id;
 
     @Column
+    @NotEmpty
     private String nombre;
 
     @Column
+    @NotEmpty
     private String apellido;
 
     @Column
+    @NotEmpty
+    @Email
     private String email;
 
     @Column(name = "created_at", nullable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private Date createdAt;
 
     public Long getId() {
