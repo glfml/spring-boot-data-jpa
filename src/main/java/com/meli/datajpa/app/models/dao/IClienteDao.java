@@ -1,15 +1,8 @@
 package com.meli.datajpa.app.models.dao;
 
 import com.meli.datajpa.app.models.entity.Cliente;
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
+//JpaRepository es un poco mejor que Crud, implementa paginado, etc.
+public interface IClienteDao extends CrudRepository<Cliente, Long> {
 
-public interface IClienteDao {
-
-    public List<Cliente> findAll();
-
-    public void save(Cliente cliente);
-
-    public Cliente findOne(Long id);
-
-    public void delete(Long id);
 }
