@@ -3,7 +3,6 @@ package com.meli.datajpa.app.models.dao;
 import com.meli.datajpa.app.models.entity.Cliente;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -15,7 +14,7 @@ public class ClienteDaoImpl implements IClienteDao {
     private EntityManager em;
 
     @SuppressWarnings("unchecked")
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @Override
     public List<Cliente> findAll() {
         return em.createQuery("from Cliente").getResultList();
@@ -32,7 +31,15 @@ public class ClienteDaoImpl implements IClienteDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cliente findOne(Long id) {
         return em.find(Cliente.class, id);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        Cliente cliente = this.findOne(id);
+        em.remove(cliente);
     }
 }

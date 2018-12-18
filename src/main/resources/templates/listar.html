@@ -29,6 +29,7 @@
         <td th:text="${cliente.createdAt}"></td>
         <td>
             <a th:href="@{/form/} + ${cliente.id}" th:text="editar"></a>
+            <a th:href="@{/eliminar/} + ${cliente.id}" th:text="eliminar"></a>
         </td>
     </tr>
     </tbody>
