@@ -1,0 +1,25 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+    adminer:
+      image: adminer
+      restart: always
+      ports:
+        - 8043:8080
+      links:
+        - mysql
+    mysql:
+      image: mysql:5.5
+      container_name: mysql
+      working_dir: /application
+      volumes:
+        - .:/application
+      environment:
+        - MYSQL_ROOT_PASSWORD=dbpass
+        - MYSQL_DATABASE=dbname
+        - MYSQL_USER=dbuser
+        - MYSQL_PASSWORD=dbpass
+      ports:
+        - "3306:3306"
