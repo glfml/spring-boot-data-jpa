@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<nav th:fragment="paginator">
+    <ul>
+        <li>
+            <span th:if="${pager.first}">Primera</span>
+            <a th:href="@{${pager.url}(page=0)}" th:if="${not pager.first}">Primera</a>
+        </li>
+        <li>
+            <span th:if="${not pager.hasPrevious()}">Anterior</span>
+            <a th:href="@{${pager.url}(page=${pager.currentPage-2})}" th:if="${pager.hasPrevious()}">Anterior</a>
+        </li>
+        <li th:each="item : ${pager.pages}">
+
+            <span th:if="${item.current}" th:text="${item.number}"></span>
+            <a th:href="@{${pager.url}(page=${item.number-1})}" th:if="${not item.current}" th:text="${item.number}"></a>
+
+        </li>
+        <li>
+            <span th:if="${not pager.hasNext()}">Siguiente</span>
+            <a th:href="@{${pager.url}(page=${pager.currentPage})}" th:if="${pager.hasNext()}">Siguiente</a>
+        </li>
+        <li>
+            <span th:if="${pager.last}">Última</span>
+            <a th:href="@{${pager.url}(page=${pager.totalPages-1})}" th:if="${not pager.last}">Última</a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
