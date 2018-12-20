@@ -10,6 +10,9 @@
 
     <a th:href="@{/listar}">Listado</a>
     <a th:href="@{/form}">Agregar cliente</a>
+
+    <div style="color:blue" th:if="${success != null}" th:text="${success}"></div>
+    <div style="color:red" th:if="${errors != null}" th:text="${errors}"></div>
 </header>
 
 <footer th:fragment="footer">

@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -51,12 +52,15 @@ public class ClienteController {
     }
 
     @RequestMapping(value="/form", method = RequestMethod.POST)
-    public String guardar(@Valid Cliente cliente, BindingResult result, Model model) {
+    public String guardar(@Valid Cliente cliente, BindingResult result, Model model, RedirectAttributes flash) {
         if (result.hasErrors()) {
             model.addAttribute("titulo", "Completar formulario, tiene errores");
+            model.addAttribute("errors", "Cliente no creado/editado");
+
             return "form";
         }
         clienteService.save(cliente);
+        flash.addFlashAttribute("success", "Cliente creado/editado");
 
         return "redirect:listar";
     }
