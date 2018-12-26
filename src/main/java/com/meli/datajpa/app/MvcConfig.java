@@ -9,10 +9,10 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploads/**")
-        .addResourceLocations("file:/opt/uploads")
-        ;
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/uploads/**")
+//        .addResourceLocations("file:/opt/uploads")
+//        ;
+//    }
 }
