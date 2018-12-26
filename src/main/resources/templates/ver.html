@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: header"></head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+<div th:text="${titulo}"></div>
+
+<img th:if="${#strings.length(cliente.photo) > 0}" th:src="@{'/uploads/'+${cliente.photo}}" th:alt="${cliente.photo}">
+
+
+
+<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

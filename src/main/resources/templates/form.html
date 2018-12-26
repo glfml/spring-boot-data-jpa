@@ -13,7 +13,7 @@
     </ul>
 </div>
 
-<form th:action="@{/form}" th:object="${cliente}" method="post">
+<form th:action="@{/form}" th:object="${cliente}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}">
 
     <input placeholder="Nombre" type="text" th:field="*{nombre}" th:errorclass="error">
@@ -31,6 +31,9 @@
     <input placeholder="Created At" type="date" th:field="*{createdAt}">
     <small th:if="${#fields.hasErrors('createdAt')}" th:errors="*{createdAt}"></small>
     <br>
+
+    <input type="file" placeholder="Foto" name="file">
+    <small th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}"></small>
 
     <button type="submit">Crear</button>
 </form>
