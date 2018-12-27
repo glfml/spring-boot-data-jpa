@@ -2,10 +2,10 @@ package com.meli.datajpa.app.controllers;
 
 import com.meli.datajpa.app.models.entity.Cliente;
 import com.meli.datajpa.app.service.IClienteService;
+import com.meli.datajpa.app.service.IUploadFileService;
 import com.meli.datajpa.app.util.paginator.PageRender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,12 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 
 @Controller
@@ -33,16 +29,15 @@ public class ClienteController {
     @Autowired
     private IClienteService clienteService;
 
+    @Autowired
+    private IUploadFileService uploadFileService;
+
     @GetMapping(value="/uploads/{filename:.+}")
     public ResponseEntity<Resource> verFoto(@PathVariable String filename)
     {
-        Path path = Paths.get("uploads").resolve(filename).toAbsolutePath();
         Resource resource = null;
         try {
-            resource = new UrlResource(path.toUri());
-            if (!resource.exists() || !resource.isReadable()) {
-                throw new RuntimeException("No se puede cargar la foto");
-            }
+            resource = uploadFileService.load(filename);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -116,18 +111,13 @@ public class ClienteController {
         if (!photo.isEmpty()) {
 
             if (cliente.getId() != null && cliente.getId() > 0 && cliente.getPhoto() != null && cliente.getPhoto().length() > 0) {
-                Path path = Paths.get("uploads").resolve(cliente.getPhoto()).toAbsolutePath();
-                File file = path.toFile();
-                if (file.exists() && file.canRead()) {
-                    file.delete();
-                }
+                uploadFileService.delete(cliente.getPhoto());
             }
 
-            Path rootPath = Paths.get("uploads").resolve(photo.getOriginalFilename()).toAbsolutePath();
             try {
-                flash.addFlashAttribute("info", "Archivo procesado correctamente: " + photo.getOriginalFilename());
-                cliente.setPhoto(photo.getOriginalFilename());
-                Files.copy(photo.getInputStream(), rootPath);//todo tira excepcion si ya existe, podes usar CopyOption.REPLACE_EXISTING
+                String filename = this.uploadFileService.copy(photo);
+                flash.addFlashAttribute("info", "Archivo procesado correctamente: " + filename);
+                cliente.setPhoto(filename);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -147,12 +137,8 @@ public class ClienteController {
             clienteService.delete(id);
             flash.addFlashAttribute("success", "Cliente eliminado");
 
-            Path path = Paths.get("uploads").resolve(cliente.getPhoto()).toAbsolutePath();
-            File file = path.toFile();
-            if (file.exists() && file.canRead()) {
-                if (file.delete()) {
-                    flash.addFlashAttribute("info", "Archivo asociado eliminado");
-                }
+            if (uploadFileService.delete(cliente.getPhoto())) {
+                flash.addFlashAttribute("info", "Archivo asociado eliminado");
             }
         }
 
