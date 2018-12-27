@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -113,15 +114,22 @@ public class ClienteController {
         }
 
         if (!photo.isEmpty()) {
-            String rootPath = "/opt/uploads";
+
+            if (cliente.getId() != null && cliente.getId() > 0 && cliente.getPhoto() != null && cliente.getPhoto().length() > 0) {
+                Path path = Paths.get("uploads").resolve(cliente.getPhoto()).toAbsolutePath();
+                File file = path.toFile();
+                if (file.exists() && file.canRead()) {
+                    file.delete();
+                }
+            }
+
+            Path rootPath = Paths.get("uploads").resolve(photo.getOriginalFilename()).toAbsolutePath();
             try {
-                byte[] bytes = photo.getBytes();
-                Path finalPath = Paths.get(rootPath + "//" + photo.getOriginalFilename());
-                Files.write(finalPath, bytes);
                 flash.addFlashAttribute("info", "Archivo procesado correctamente: " + photo.getOriginalFilename());
                 cliente.setPhoto(photo.getOriginalFilename());
+                Files.copy(photo.getInputStream(), rootPath);//todo tira excepcion si ya existe, podes usar CopyOption.REPLACE_EXISTING
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
         }
 
@@ -132,9 +140,20 @@ public class ClienteController {
     }
 
     @RequestMapping(value = "/eliminar/{id}")
-    public String eliminar(@PathVariable(value = "id") Long id) {
+    public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
         if (id > 0) {
+            Cliente cliente = clienteService.findOne(id);
+
             clienteService.delete(id);
+            flash.addFlashAttribute("success", "Cliente eliminado");
+
+            Path path = Paths.get("uploads").resolve(cliente.getPhoto()).toAbsolutePath();
+            File file = path.toFile();
+            if (file.exists() && file.canRead()) {
+                if (file.delete()) {
+                    flash.addFlashAttribute("info", "Archivo asociado eliminado");
+                }
+            }
         }
 
         return "redirect:/listar";

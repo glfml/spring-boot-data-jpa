@@ -38,6 +38,7 @@ public class Cliente implements Serializable {
     @NotNull
     private Date createdAt;
 
+    @Column
     private String photo;
 
     public Long getId() {
